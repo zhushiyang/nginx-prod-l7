@@ -1,0 +1,84 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.ParametersAction>
+      <safeParameters class="sorted-set"/>
+      <parameters>
+        <hudson.model.TextParameterValue>
+          <name>NGINX_UPSTREAM_CONFIG</name>
+          <description># Nginx的upstream配置</description>
+          <value># 测试upstream构建
+upstream ${JOB_BASE_NAME} {
+    server 127.0.0.1:80 weight=1 max_fails=2 fail_timeout=10;
+    upsync 10.0.1.224:2379/v2/keys/upstreams/${JOB_BASE_NAME} upsync_timeout=6m upsync_interval=500ms upsync_type=etcd strong_dependency=off;
+    upsync_dump_path /usr/local/openresty/nginx/conf/dump_upstreams/${JOB_BASE_NAME}.conf;
+
+    check interval=3000 rise=2 fall=5 timeout=1000 type=http;
+    check_keepalive_requests 1;
+    check_http_send &quot;HEAD / HTTP/1.0\r\n\r\n&quot;;
+    check_http_expect_alive http_2xx http_3xx;
+}
+</value>
+        </hudson.model.TextParameterValue>
+      </parameters>
+      <parameterDefinitionNames>
+        <string>NGINX_UPSTREAM_CONFIG</string>
+      </parameterDefinitionNames>
+    </hudson.model.ParametersAction>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserIdCause>
+            <userId>admin</userId>
+          </hudson.model.Cause_-UserIdCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <com.cloudbees.plugins.credentials.builds.CredentialsParameterBinder plugin="credentials@1139.veb_9579fca_33b_">
+      <boundCredentials class="concurrent-hash-map"/>
+    </com.cloudbees.plugins.credentials.builds.CredentialsParameterBinder>
+    <hudson.plugins.git.util.BuildData plugin="git@4.11.5">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/nginx-prod-l7/master</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.2">
+              <sha1>4f15357893746f260c9b9a785cd295b599d55236</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/nginx-prod-l7/master</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>2</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <remoteUrls>
+        <string>http://10.0.1.225/nginx/nginx-prod-l7.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+  </actions>
+  <queueId>3</queueId>
+  <timestamp>1661738261474</timestamp>
+  <startTime>1661738261485</startTime>
+  <result>FAILURE</result>
+  <duration>1151</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/jenkins_home/workspace/Nginx-Prod-L7/upstreams/web_cluster_upsync</workspace>
+  <hudsonVersion>2.346.3</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@4.11.5">
+    <authorOrCommitter>false</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</build>

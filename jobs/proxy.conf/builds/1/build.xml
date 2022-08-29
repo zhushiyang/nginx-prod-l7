@@ -1,0 +1,97 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.ParametersAction>
+      <safeParameters class="sorted-set"/>
+      <parameters>
+        <hudson.model.TextParameterValue>
+          <name>NGINX_PROXY_CONFIG</name>
+          <description># Nginx的代理配置</description>
+          <value># 测试proxy.conf构建
+proxy_http_version 1.1;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header REMOTE_ADDR $remote_addr;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header RealIP $remote_addr;
+proxy_set_header Host $host;
+proxy_set_header Connection &quot;&quot;;
+proxy_set_header host-name $hostname;
+proxy_pass_header Server;
+
+client_max_body_size    30m;
+proxy_connect_timeout   120s;
+proxy_send_timeout      120s;
+proxy_read_timeout      120s;
+proxy_temp_file_write_size 1024m;
+proxy_buffer_size               32k;
+proxy_buffers                   4 32k;
+proxy_busy_buffers_size 64k;
+
+proxy_ignore_client_abort on;
+
+#失败不重试
+proxy_next_upstream_tries  1;
+</value>
+        </hudson.model.TextParameterValue>
+      </parameters>
+      <parameterDefinitionNames>
+        <string>NGINX_PROXY_CONFIG</string>
+      </parameterDefinitionNames>
+    </hudson.model.ParametersAction>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserIdCause>
+            <userId>admin</userId>
+          </hudson.model.Cause_-UserIdCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <com.cloudbees.plugins.credentials.builds.CredentialsParameterBinder plugin="credentials@1139.veb_9579fca_33b_">
+      <boundCredentials class="concurrent-hash-map"/>
+    </com.cloudbees.plugins.credentials.builds.CredentialsParameterBinder>
+    <hudson.plugins.git.util.BuildData plugin="git@4.11.5">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/nginx-prod-l7/master</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.2">
+              <sha1>3a4cafa5aae128839df51840473a250614714804</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/nginx-prod-l7/master</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>1</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <remoteUrls>
+        <string>http://10.0.1.225/nginx/nginx-prod-l7.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+  </actions>
+  <queueId>1</queueId>
+  <timestamp>1661735556111</timestamp>
+  <startTime>1661735556121</startTime>
+  <result>SUCCESS</result>
+  <duration>4116</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/jenkins_home/workspace/Nginx-Prod-L7/proxy.conf</workspace>
+  <hudsonVersion>2.346.3</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@4.11.5">
+    <authorOrCommitter>false</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</build>

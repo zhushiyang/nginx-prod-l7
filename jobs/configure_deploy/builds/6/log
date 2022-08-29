@@ -1,0 +1,111 @@
+Started by user [8mha:////4DirHsd8CYH5r07ffORzO2l4BYA9xqKPICdS8R8WyHvPAAAAlx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzWEgZu/dLi1CL9xJTczDwAj6GcLcAAAAA=[0madmin
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/Nginx-Prod-L7/configure_deploy
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] Done
+The recommended git tool is: NONE
+using credential ops-gitlab
+Cloning the remote Git repository
+Cloning repository http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git init /var/jenkins_home/workspace/Nginx-Prod-L7/configure_deploy # timeout=10
+Fetching upstream changes from http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git fetch --tags --force --progress -- http://10.0.1.225/nginx/nginx-prod-l7.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url http://10.0.1.225/nginx/nginx-prod-l7.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 4a834ebe5237a1c49a28a5128f304a623ecc2184 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4a834ebe5237a1c49a28a5128f304a623ecc2184 # timeout=10
+Commit message: "Update www.zhushiyang.net version to www.zhushiyang.net-202208291112-2 by admin"
+ > git rev-list --no-walk 4a834ebe5237a1c49a28a5128f304a623ecc2184 # timeout=10
+[configure_deploy] $ /bin/sh -xe /tmp/jenkins7894968884467306292.sh
++ echo '==========> 正在下发配置文件 <=========='
+==========> 正在下发配置文件 <==========
++ ansible -i /root/hosts 10.0.1.222,10.0.1.223 -m synchronize -a 'src=./  dest=/root/docker/nginx-volume/conf delete=yes copy_links=yes rsync_opts=--exclude=.git'
+10.0.1.223 | CHANGED => {
+    "changed": true,
+    "cmd": "/usr/bin/rsync --delay-updates -F --compress --delete-after --copy-links --archive --rsh='/usr/bin/ssh -S none -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --exclude=.git --out-format='<<CHANGED>>%i %n%L' /var/jenkins_home/workspace/Nginx-Prod-L7/configure_deploy/ 10.0.1.223:/root/docker/nginx-volume/conf",
+    "msg": ".d..t...... ./\n<f..t...... README.md\n<f..t...... fastcgi.conf\n<f..t...... fastcgi.conf.default\n<f..t...... fastcgi_params\n<f..t...... fastcgi_params.default\n<f..t...... koi-utf\n<f..t...... koi-win\n<f..t...... mime.types\n<f..t...... mime.types.default\n<f..t...... nginx.conf\n<f..t...... nginx.conf.default\n<f..t...... proxy.conf\n<f..t...... scgi_params\n<f..t...... scgi_params.default\n<f..t...... uwsgi_params\n<f..t...... uwsgi_params.default\n<f..t...... win-utf\n.d..t...... certs/\n<f..t...... certs/zhushiyang.net.key\n<f..t...... certs/zhushiyang.net.pem\n.d..t...... dump_upstreams/\n<f..tp..... dump_upstreams/web_cluster_upsync.conf\n.d..t...... upstreams/\n<f..t...... upstreams/web_cluster.conf\n<f..t...... upstreams/web_cluster_upsync.conf\n.d..t...... vhosts/\n<f..t...... vhosts/www.zhushiyang.net.conf\n",
+    "rc": 0,
+    "stdout_lines": [
+        ".d..t...... ./",
+        "<f..t...... README.md",
+        "<f..t...... fastcgi.conf",
+        "<f..t...... fastcgi.conf.default",
+        "<f..t...... fastcgi_params",
+        "<f..t...... fastcgi_params.default",
+        "<f..t...... koi-utf",
+        "<f..t...... koi-win",
+        "<f..t...... mime.types",
+        "<f..t...... mime.types.default",
+        "<f..t...... nginx.conf",
+        "<f..t...... nginx.conf.default",
+        "<f..t...... proxy.conf",
+        "<f..t...... scgi_params",
+        "<f..t...... scgi_params.default",
+        "<f..t...... uwsgi_params",
+        "<f..t...... uwsgi_params.default",
+        "<f..t...... win-utf",
+        ".d..t...... certs/",
+        "<f..t...... certs/zhushiyang.net.key",
+        "<f..t...... certs/zhushiyang.net.pem",
+        ".d..t...... dump_upstreams/",
+        "<f..tp..... dump_upstreams/web_cluster_upsync.conf",
+        ".d..t...... upstreams/",
+        "<f..t...... upstreams/web_cluster.conf",
+        "<f..t...... upstreams/web_cluster_upsync.conf",
+        ".d..t...... vhosts/",
+        "<f..t...... vhosts/www.zhushiyang.net.conf"
+    ]
+}
+10.0.1.222 | CHANGED => {
+    "changed": true,
+    "cmd": "/usr/bin/rsync --delay-updates -F --compress --delete-after --copy-links --archive --rsh='/usr/bin/ssh -S none -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --exclude=.git --out-format='<<CHANGED>>%i %n%L' /var/jenkins_home/workspace/Nginx-Prod-L7/configure_deploy/ 10.0.1.222:/root/docker/nginx-volume/conf",
+    "msg": ".d..t...... ./\n<f..t...... README.md\n<f..t...... fastcgi.conf\n<f..t...... fastcgi.conf.default\n<f..t...... fastcgi_params\n<f..t...... fastcgi_params.default\n<f..t...... koi-utf\n<f..t...... koi-win\n<f..t...... mime.types\n<f..t...... mime.types.default\n<f..t...... nginx.conf\n<f..t...... nginx.conf.default\n<f..t...... proxy.conf\n<f..t...... scgi_params\n<f..t...... scgi_params.default\n<f..t...... uwsgi_params\n<f..t...... uwsgi_params.default\n<f..t...... win-utf\n.d..t...... certs/\n<f..t...... certs/zhushiyang.net.key\n<f..t...... certs/zhushiyang.net.pem\n.d..t...... dump_upstreams/\n<f..tp..... dump_upstreams/web_cluster_upsync.conf\n.d..t...... upstreams/\n<f..t...... upstreams/web_cluster.conf\n<f..t...... upstreams/web_cluster_upsync.conf\n.d..t...... vhosts/\n<f..t...... vhosts/www.zhushiyang.net.conf\n",
+    "rc": 0,
+    "stdout_lines": [
+        ".d..t...... ./",
+        "<f..t...... README.md",
+        "<f..t...... fastcgi.conf",
+        "<f..t...... fastcgi.conf.default",
+        "<f..t...... fastcgi_params",
+        "<f..t...... fastcgi_params.default",
+        "<f..t...... koi-utf",
+        "<f..t...... koi-win",
+        "<f..t...... mime.types",
+        "<f..t...... mime.types.default",
+        "<f..t...... nginx.conf",
+        "<f..t...... nginx.conf.default",
+        "<f..t...... proxy.conf",
+        "<f..t...... scgi_params",
+        "<f..t...... scgi_params.default",
+        "<f..t...... uwsgi_params",
+        "<f..t...... uwsgi_params.default",
+        "<f..t...... win-utf",
+        ".d..t...... certs/",
+        "<f..t...... certs/zhushiyang.net.key",
+        "<f..t...... certs/zhushiyang.net.pem",
+        ".d..t...... dump_upstreams/",
+        "<f..tp..... dump_upstreams/web_cluster_upsync.conf",
+        ".d..t...... upstreams/",
+        "<f..t...... upstreams/web_cluster.conf",
+        "<f..t...... upstreams/web_cluster_upsync.conf",
+        ".d..t...... vhosts/",
+        "<f..t...... vhosts/www.zhushiyang.net.conf"
+    ]
+}
++ ansible -i /root/hosts 10.0.1.222,10.0.1.223 -m shell -a 'docker exec ops-openresty nginx -t'
++ echo 0
++ CHECK_RELT=0
++ '[' 0 '!=' 0 ]
++ ansible -i /root/hosts 10.0.1.222,10.0.1.223 -m shell -a 'docker exec ops-openresty nginx -s reload'
+10.0.1.223 | CHANGED | rc=0 >>
+2022/08/29 11:15:56 [notice] 41#41: signal process started
+10.0.1.222 | CHANGED | rc=0 >>
+2022/08/29 11:15:56 [notice] 51#51: signal process started
+Finished: SUCCESS

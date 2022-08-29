@@ -1,0 +1,259 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><project>
+  <actions/>
+  <description># Nginx主配置文件</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.35">
+      <gitLabConnection>ops-gitlab</gitLabConnection>
+      <jobCredentialId/>
+      <useAlternativeCredential>false</useAlternativeCredential>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>10</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <com.gem.persistentparameter.PersistentTextParameterDefinition plugin="persistent-parameter@1.3">
+          <name>NGINX_PROCESS_EVENT_CONFIG</name>
+          <description># Nginx进程和事件模型配置</description>
+          <defaultValue># nginx work进程用户
+user   nobody;
+# 根据cpu的核数自动生成work进程树
+worker_processes   auto;
+# 启用多核CPU;
+worker_cpu_affinity   auto;
+# work进程打开最大文件数
+worker_rlimit_nofile   65536;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+#error_log  "pipe:rollback logs/error_log interval=1d baknum=7 maxsize=2G";
+
+
+pid   /var/run/nginx.pid;
+
+
+# event context
+events {
+   # 默认开启，解决惊群问题
+   accept_mutex   on;
+   # 使用epoll
+   use   epoll;
+   # 每个进程最大连接数（最大连接=连接数x进程数）
+   worker_connections   20480;
+}
+</defaultValue>
+          <successfulOnly>false</successfulOnly>
+          <trim>false</trim>
+        </com.gem.persistentparameter.PersistentTextParameterDefinition>
+        <com.gem.persistentparameter.PersistentTextParameterDefinition plugin="persistent-parameter@1.3">
+          <name>NGINX_HTTP_CONFIG</name>
+          <description># Nginx的http配置</description>
+          <defaultValue># 七层负载均衡
+http {
+   # 隐藏nginx版本号
+   server_tokens off; 
+   # 文件扩展名与文件类型映射表
+   include   mime.types;
+   log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                     '$status $body_bytes_sent "$http_referer" '
+                     '"$http_user_agent" "$http_x_forwarded_for"';
+
+   #access_log  logs/access.log  main;
+   #access_log  "pipe:rollback logs/access_log interval=1d baknum=7 maxsize=2G"  main;
+   
+   # 调整hash表，解决绑定域名过多问题
+   server_names_hash_max_size  4096;
+   server_names_hash_bucket_size   1024;
+   variables_hash_max_size 4096;
+   variables_hash_bucket_size 2048;
+   # 默认文件类型
+   default_type   text/html;
+   # 设置编码格式utf-8
+   charset   utf-8;
+   # 当请求头部中有下划线时，认为请求有效
+   underscores_in_headers   on;
+
+   # 防止网络阻塞
+   tcp_nopush   on;
+   # 输出缓冲区
+   tcp_nodelay   on;
+   # 输出拆包大小
+   output_buffers   4 32k;
+   postpone_output   1460;
+   # 缓冲区代理缓冲用户端请求的最大字节数
+   client_header_buffer_size   128k;
+   large_client_header_buffers   4 256k;
+   # 客户端发送header超时
+   client_body_timeout   30;
+   # 发送到客户端超时
+   send_timeout   30;
+   # 注意：如果图片显示不正常把这个改成off。
+   sendfile   on;
+   # keepalive_timeout  60;
+   keepalive_timeout   60;
+
+   # 开启gzip压缩输出
+   gzip   on;
+   # 最小压缩文件大小
+   gzip_min_length   1k;
+   # 处理请求压缩的缓冲区数量和大小
+   gzip_buffers   4 16k;
+   # 设置健康检查共享内存
+   check_shm_size 20M;  
+   # 压缩类型，默认就已经包含textml，所以下面就不用再写了，写上去也不会有问题，但是会有一个warn
+   gzip_types   text/plain application/x-javascript text/css application/xml;
+   # 压缩比率，1代表压缩比最小处理速度最快，9压缩比最大但处理速度最慢（传输快但比较消耗cpu）
+   gzip_comp_level   9;
+   # 压缩通过代理的所有文件
+   gzip_proxied   any;
+   # vary header支持
+   gzip_vary   on;
+  
+   include   proxy.conf;
+   # server配置
+   server {  
+       listen 80 backlog=65535;
+       # listen 8080 backlog=65535;
+       # listen 443 ssl backlog=65535;
+       # ssl_certificate ./ssl/xxx/xxx.crt;
+       # ssl_certificate_key ./ssl/xxx/xxx.key;
+       root   /dev/null;
+       server_name   _;
+       # nginx状态信息
+       location = /stub_status {
+           stub_status;
+        }
+       # upstream健康检查信息
+       location = /check_status {
+           check_status;
+           access_log off;
+           error_log off;
+           # allow SOME.IP.ADD.RESS;
+           # deny all;
+       }
+       # upsync show
+       location /upstream_list {
+           upstream_show;
+       }
+   }
+   # 虚拟主机配置目录
+   include vhosts/*.conf;
+   # upstreams配置目录
+   include upstreams/*.conf; 
+}
+</defaultValue>
+          <successfulOnly>false</successfulOnly>
+          <trim>false</trim>
+        </com.gem.persistentparameter.PersistentTextParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.11.5">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <name>nginx-prod-l7</name>
+        <url>http://10.0.1.225/nginx/nginx-prod-l7.git</url>
+        <credentialsId>ops-gitlab</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="empty-list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>if [ ! -f /tmp/${JOB_BASE_NAME}.lock ];then
+    echo "&gt; ==========&gt; 进行加锁 &lt;=========="
+    echo "" &gt; /tmp/${JOB_BASE_NAME}.lock
+else
+    echo "==========&gt; 不能多人同时修改该文件，请稍后修改 &lt;=========="
+    exit 1
+fi
+echo "==========&gt; 正在生成配置文件 &lt;=========="
+echo -e "${NGINX_PROCESS_EVENT_CONFIG}\n${NGINX_HTTP_CONFIG}" &gt; ${JOB_BASE_NAME}
+echo "==========&gt; 正在校验文件变化 &lt;=========="
+# 时间戳，格式：年月日时分-202208100510
+DATE_TIME=$(date +%Y%m%d%H%M)
+# git status结果为0，说明有修改，其它结果说明没有修改
+CHECK_RELT=$(git status ${JOB_BASE_NAME}|grep ${JOB_BASE_NAME}&gt;/dev/null ;echo $?)
+if [  ${CHECK_RELT} = "0" ];then
+    git add --all
+    git commit -m "Update ${JOB_BASE_NAME} version to ${JOB_BASE_NAME}-${DATE_TIME}-${BUILD_NUMBER} by ${BUILD_USER}"
+else
+    echo "==========&gt; 文件内容无变化 &lt;=========="
+    exit 1
+fi</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.plugins.git.GitPublisher plugin="git@4.11.5">
+      <configVersion>2</configVersion>
+      <pushMerge>true</pushMerge>
+      <pushOnlyIfSuccess>true</pushOnlyIfSuccess>
+      <forcePush>false</forcePush>
+      <tagsToPush>
+        <hudson.plugins.git.GitPublisher_-TagToPush>
+          <targetRepoName>nginx-prod-l7</targetRepoName>
+          <tagName>${JOB_BASE_NAME}-${BUILD_USER}-${BUILD_NUMBER}</tagName>
+          <tagMessage/>
+          <createTag>true</createTag>
+          <updateTag>false</updateTag>
+        </hudson.plugins.git.GitPublisher_-TagToPush>
+      </tagsToPush>
+      <branchesToPush>
+        <hudson.plugins.git.GitPublisher_-BranchToPush>
+          <targetRepoName>nginx-prod-l7</targetRepoName>
+          <branchName>master</branchName>
+          <rebaseBeforePush>false</rebaseBeforePush>
+        </hudson.plugins.git.GitPublisher_-BranchToPush>
+      </branchesToPush>
+    </hudson.plugins.git.GitPublisher>
+    <hudson.plugins.postbuildtask.PostbuildTask plugin="postbuild-task@1.9">
+      <tasks>
+        <hudson.plugins.postbuildtask.TaskProperties>
+          <logTexts>
+            <hudson.plugins.postbuildtask.LogProperties>
+              <logText/>
+              <operator>AND</operator>
+            </hudson.plugins.postbuildtask.LogProperties>
+          </logTexts>
+          <EscalateStatus>false</EscalateStatus>
+          <RunIfJobSuccessful>false</RunIfJobSuccessful>
+          <script>echo "==========&gt; 删除锁文件 &lt;=========="&#13;
+rm -f /tmp/${JOB_BASE_NAME}.lock</script>
+        </hudson.plugins.postbuildtask.TaskProperties>
+      </tasks>
+    </hudson.plugins.postbuildtask.PostbuildTask>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.42">
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter/>
+      <externalDelete/>
+      <disableDeferredWipeout>false</disableDeferredWipeout>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.18"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.8"/>
+  </buildWrappers>
+</project>

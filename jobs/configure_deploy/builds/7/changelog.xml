@@ -1,0 +1,19 @@
+commit 3779b3d8f9e47f642bdc293d36d9972a37eda05c
+tree e4b56f9b56f0450b83afe9726ba5b53759b34550
+parent 6934ee1e0a7625b3d9b12853c2c7743139675a36
+author root <root@zhushiyang.net> 2022-08-29 11:21:37 +0800
+committer root <root@zhushiyang.net> 2022-08-29 11:21:37 +0800
+
+    Update www.zhushiyang.net version to www.zhushiyang.net-202208291121-3 by admin
+
+
+:100644 100644 b23e8c7deeda38019fc062856fe791ed32c798e5 8105c67395c56269ea09728f08b17384fc382a35 M	vhosts/www.zhushiyang.net.conf
+commit 6934ee1e0a7625b3d9b12853c2c7743139675a36
+tree 8d94db096669d2105f10147d635081bf7d7f4c60
+parent 4a834ebe5237a1c49a28a5128f304a623ecc2184
+author Administrator <admin@example.com> 2022-08-29 11:17:18 +0800
+committer Administrator <admin@example.com> 2022-08-29 11:17:18 +0800
+
+    Delete web_cluster.conf
+
+:100644 000000 e48a45a90d6953f010391898235a845fa6d6b6fa 0000000000000000000000000000000000000000 D	upstreams/web_cluster.conf

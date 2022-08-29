@@ -1,0 +1,82 @@
+Started by user [8mha:////4DirHsd8CYH5r07ffORzO2l4BYA9xqKPICdS8R8WyHvPAAAAlx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzWEgZu/dLi1CL9xJTczDwAj6GcLcAAAAA=[0madmin
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/Nginx-Prod-L7/upstreams/web_cluster_upsync
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] Done
+The recommended git tool is: NONE
+using credential ops-gitlab
+Cloning the remote Git repository
+Cloning repository http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git init /var/jenkins_home/workspace/Nginx-Prod-L7/upstreams/web_cluster_upsync # timeout=10
+Fetching upstream changes from http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git fetch --tags --force --progress -- http://10.0.1.225/nginx/nginx-prod-l7.git +refs/heads/*:refs/remotes/nginx-prod-l7/* # timeout=10
+ > git config remote.nginx-prod-l7.url http://10.0.1.225/nginx/nginx-prod-l7.git # timeout=10
+ > git config --add remote.nginx-prod-l7.fetch +refs/heads/*:refs/remotes/nginx-prod-l7/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/nginx-prod-l7/master^{commit} # timeout=10
+Checking out Revision 4f15357893746f260c9b9a785cd295b599d55236 (refs/remotes/nginx-prod-l7/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4f15357893746f260c9b9a785cd295b599d55236 # timeout=10
+Commit message: "Update proxy.conf version to proxy.conf-202208290912-1 by admin"
+ > git rev-list --no-walk 4f15357893746f260c9b9a785cd295b599d55236 # timeout=10
+[web_cluster_upsync] $ /bin/sh -xe /tmp/jenkins8144156096289429374.sh
++ '[' '!' -f /tmp/web_cluster_upsync.lock ]
++ echo '> ==========> 进行加锁 <=========='
+> ==========> 进行加锁 <==========
++ echo 
++ echo '==========> 正在生成配置文件 <=========='
+==========> 正在生成配置文件 <==========
++ '[' '!' -d ./upstreams ]
++ echo '# 测试upstream构建
+upstream web_cluster_upsync {
+    server 127.0.0.1:80 weight=1 max_fails=2 fail_timeout=10;
+    upsync 10.0.1.224:2379/v2/keys/upstreams/web_cluster_upsync upsync_timeout=6m upsync_interval=500ms upsync_type=etcd strong_dependency=off;
+    upsync_dump_path /usr/local/openresty/nginx/conf/dump_upstreams/web_cluster_upsync.conf;
+
+    check interval=3000 rise=2 fall=5 timeout=1000 type=http;
+    check_keepalive_requests 1;
+    check_http_send "HEAD / HTTP/1.0\r\n\r\n";
+    check_http_expect_alive http_2xx http_3xx;
+}
+'
++ echo '==========> 正在校验文件变化 <=========='
+==========> 正在校验文件变化 <==========
++ date '+%Y%m%d%H%M'
++ DATE_TIME=202208290959
++ git status ./upstreams/web_cluster_upsync.conf
++ grep web_cluster_upsync.conf
++ echo 0
++ CHECK_RELT=0
++ '[' 0 '=' 0 ]
++ git add --all
++ git commit -m 'Update web_cluster_upsync version to web_cluster_upsync-202208290959-3 by admin'
+[detached HEAD d1931d2] Update web_cluster_upsync version to web_cluster_upsync-202208290959-3 by admin
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+The recommended git tool is: NONE
+using credential ops-gitlab
+ > git tag -l web_cluster_upsync-admin-3 # timeout=10
+ > git tag -a -f -m Jenkins Git plugin tagging with web_cluster_upsync-admin-3 web_cluster_upsync-admin-3 # timeout=10
+Pushing tag web_cluster_upsync-admin-3 to repo nginx-prod-l7
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git push http://10.0.1.225/nginx/nginx-prod-l7.git web_cluster_upsync-admin-3 # timeout=10
+Pushing HEAD to branch master at repo nginx-prod-l7
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git push http://10.0.1.225/nginx/nginx-prod-l7.git HEAD:master # timeout=10
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : echo "==========> 删除锁文件 <=========="
+rm -f /tmp/${JOB_BASE_NAME}.lock
+[web_cluster_upsync] $ /bin/sh -xe /tmp/jenkins6798521457973341641.sh
++ echo '==========> 删除锁文件 <=========='
+==========> 删除锁文件 <==========
++ rm -f /tmp/web_cluster_upsync.lock
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+Finished: SUCCESS

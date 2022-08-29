@@ -1,0 +1,102 @@
+Started by user [8mha:////4DirHsd8CYH5r07ffORzO2l4BYA9xqKPICdS8R8WyHvPAAAAlx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzWEgZu/dLi1CL9xJTczDwAj6GcLcAAAAA=[0madmin
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/Nginx-Prod-L7/vhosts/www.zhushiyang.net
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] Done
+The recommended git tool is: NONE
+using credential ops-gitlab
+Cloning the remote Git repository
+Cloning repository http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git init /var/jenkins_home/workspace/Nginx-Prod-L7/vhosts/www.zhushiyang.net # timeout=10
+Fetching upstream changes from http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git fetch --tags --force --progress -- http://10.0.1.225/nginx/nginx-prod-l7.git +refs/heads/*:refs/remotes/nginx-prod-l7/* # timeout=10
+ > git config remote.nginx-prod-l7.url http://10.0.1.225/nginx/nginx-prod-l7.git # timeout=10
+ > git config --add remote.nginx-prod-l7.fetch +refs/heads/*:refs/remotes/nginx-prod-l7/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/nginx-prod-l7/master^{commit} # timeout=10
+Checking out Revision 6fc47827717efffef5111d2632bd75869f3bc178 (refs/remotes/nginx-prod-l7/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 6fc47827717efffef5111d2632bd75869f3bc178 # timeout=10
+Commit message: "Update www.zhushiyang.net version to www.zhushiyang.net-202208291041-1 by admin"
+ > git rev-list --no-walk d1931d284636ccc3ed8b64eaf20098ad8b4e387d # timeout=10
+[www.zhushiyang.net] $ /bin/sh -xe /tmp/jenkins118373345111070996.sh
++ '[' '!' -f /tmp/www.zhushiyang.net.lock ]
++ echo '> ==========> 进行加锁 <=========='
+> ==========> 进行加锁 <==========
++ echo 
++ echo '==========> 正在生成配置文件 <=========='
+==========> 正在生成配置文件 <==========
++ '[' '!' -d ./vhosts ]
++ echo '# 测试vhosts构建
+#server {
+#    listen 80;
+#    server_name www.zhushiyang.net;
+#    return 301 https://$server_name$request_uri;
+#}
+
+server{
+    listen 80 ;
+    listen 443 ssl;
+    server_name  www.zhushiyang.net;
+
+    access_log  /var/log/nginx/www.zhushiyang.net.access.log  main;
+
+    ssl_certificate      ./certs/zhushiyang.net.pem;
+    ssl_certificate_key  ./certs/zhushiyang.net.key;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+    ssl_protocols TLSv1.1 TLSv1.2;
+    add_header Strict-Transport-Security "max-age=63072000" always;
+
+   
+    # www主程序
+    location / {
+        # 支持upsync
+        proxy_pass http://web_cluster_upsync;
+    }
+
+}
+'
++ echo '==========> 正在校验文件变化 <=========='
+==========> 正在校验文件变化 <==========
++ date '+%Y%m%d%H%M'
++ DATE_TIME=202208291112
++ git status ./vhosts/www.zhushiyang.net.conf
++ grep www.zhushiyang.net.conf
++ echo 0
++ CHECK_RELT=0
++ '[' 0 '=' 0 ]
++ git add --all
++ git commit -m 'Update www.zhushiyang.net version to www.zhushiyang.net-202208291112-2 by admin'
+[detached HEAD 4a834eb] Update www.zhushiyang.net version to www.zhushiyang.net-202208291112-2 by admin
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+The recommended git tool is: NONE
+using credential ops-gitlab
+ > git tag -l www.zhushiyang.net-admin-2 # timeout=10
+ > git tag -a -f -m Jenkins Git plugin tagging with www.zhushiyang.net-admin-2 www.zhushiyang.net-admin-2 # timeout=10
+Pushing tag www.zhushiyang.net-admin-2 to repo nginx-prod-l7
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git push http://10.0.1.225/nginx/nginx-prod-l7.git www.zhushiyang.net-admin-2 # timeout=10
+Pushing HEAD to branch master at repo nginx-prod-l7
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git push http://10.0.1.225/nginx/nginx-prod-l7.git HEAD:master # timeout=10
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : echo "==========> 删除锁文件 <=========="
+rm -f /tmp/${JOB_BASE_NAME}.lock
+[www.zhushiyang.net] $ /bin/sh -xe /tmp/jenkins3286751040673887824.sh
++ echo '==========> 删除锁文件 <=========='
+==========> 删除锁文件 <==========
++ rm -f /tmp/www.zhushiyang.net.lock
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+Finished: SUCCESS

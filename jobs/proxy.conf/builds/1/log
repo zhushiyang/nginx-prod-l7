@@ -1,0 +1,93 @@
+Started by user [8mha:////4DirHsd8CYH5r07ffORzO2l4BYA9xqKPICdS8R8WyHvPAAAAlx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzWEgZu/dLi1CL9xJTczDwAj6GcLcAAAAA=[0madmin
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/Nginx-Prod-L7/proxy.conf
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+The recommended git tool is: NONE
+using credential ops-gitlab
+Cloning the remote Git repository
+Cloning repository http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git init /var/jenkins_home/workspace/Nginx-Prod-L7/proxy.conf # timeout=10
+Fetching upstream changes from http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git fetch --tags --force --progress -- http://10.0.1.225/nginx/nginx-prod-l7.git +refs/heads/*:refs/remotes/nginx-prod-l7/* # timeout=10
+ > git config remote.nginx-prod-l7.url http://10.0.1.225/nginx/nginx-prod-l7.git # timeout=10
+ > git config --add remote.nginx-prod-l7.fetch +refs/heads/*:refs/remotes/nginx-prod-l7/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/nginx-prod-l7/master^{commit} # timeout=10
+Checking out Revision 3a4cafa5aae128839df51840473a250614714804 (refs/remotes/nginx-prod-l7/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 3a4cafa5aae128839df51840473a250614714804 # timeout=10
+Commit message: "Update nginx.conf version to nginx.conf-202208261854-3 by admin"
+First time build. Skipping changelog.
+[proxy.conf] $ /bin/sh -xe /tmp/jenkins8946924756079864139.sh
++ '[' '!' -f /tmp/proxy.conf.lock ]
++ echo '> ==========> 进行加锁 <=========='
+> ==========> 进行加锁 <==========
++ echo 
++ echo '==========> 正在生成配置文件 <=========='
+==========> 正在生成配置文件 <==========
++ echo -e '# 测试proxy.conf构建
+proxy_http_version 1.1;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header REMOTE_ADDR $remote_addr;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header RealIP $remote_addr;
+proxy_set_header Host $host;
+proxy_set_header Connection "";
+proxy_set_header host-name ops-jenkins;
+proxy_pass_header Server;
+
+client_max_body_size    30m;
+proxy_connect_timeout   120s;
+proxy_send_timeout      120s;
+proxy_read_timeout      120s;
+proxy_temp_file_write_size 1024m;
+proxy_buffer_size               32k;
+proxy_buffers                   4 32k;
+proxy_busy_buffers_size 64k;
+
+proxy_ignore_client_abort on;
+
+#失败不重试
+proxy_next_upstream_tries  1;
+'
++ echo '==========> 正在校验文件变化 <=========='
+==========> 正在校验文件变化 <==========
++ date '+%Y%m%d%H%M'
++ DATE_TIME=202208290912
++ git status proxy.conf
++ grep proxy.conf
++ echo 0
++ CHECK_RELT=0
++ '[' 0 '=' 0 ]
++ git add --all
++ git commit -m 'Update proxy.conf version to proxy.conf-202208290912-1 by admin'
+[detached HEAD 4f15357] Update proxy.conf version to proxy.conf-202208290912-1 by admin
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+The recommended git tool is: NONE
+using credential ops-gitlab
+ > git tag -l proxy.conf-admin-1 # timeout=10
+ > git tag -a -f -m Jenkins Git plugin tagging with proxy.conf-admin-1 proxy.conf-admin-1 # timeout=10
+Pushing tag proxy.conf-admin-1 to repo nginx-prod-l7
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git push http://10.0.1.225/nginx/nginx-prod-l7.git proxy.conf-admin-1 # timeout=10
+Pushing HEAD to branch master at repo nginx-prod-l7
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git push http://10.0.1.225/nginx/nginx-prod-l7.git HEAD:master # timeout=10
+Performing Post build task...
+Match found for : : True
+Logical operation result is TRUE
+Running script  : echo "==========> 删除锁文件 <=========="
+rm -f /tmp/${JOB_BASE_NAME}.lock
+[proxy.conf] $ /bin/sh -xe /tmp/jenkins6929041466181004502.sh
++ echo '==========> 删除锁文件 <=========='
+==========> 删除锁文件 <==========
++ rm -f /tmp/proxy.conf.lock
+POST BUILD TASK : SUCCESS
+END OF POST BUILD TASK : 0
+Finished: SUCCESS

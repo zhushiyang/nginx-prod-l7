@@ -1,0 +1,10 @@
+commit 83bc58233f8fd3218a875917d690af0f712a30e9
+tree 7c32b0c146c5d6db6cfa23d3e80510f8b62dc167
+parent bc56956f067beab91f008fc2636d2f3485dfc16e
+author root <root@zhushiyang.net> 2022-08-26 18:10:41 +0800
+committer root <root@zhushiyang.net> 2022-08-26 18:10:41 +0800
+
+    Update nginx.conf version to nginx.conf-202208261810-2 by admin
+
+
+:100644 100644 7eb68e5fa5f4bf57db655263aea826b24c40a7f0 7d38d19c9026db7a202bdc1dc47e859773a23842 M	nginx.conf

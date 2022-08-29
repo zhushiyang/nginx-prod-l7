@@ -1,0 +1,35 @@
+Started by user [8mha:////4DirHsd8CYH5r07ffORzO2l4BYA9xqKPICdS8R8WyHvPAAAAlx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzWEgZu/dLi1CL9xJTczDwAj6GcLcAAAAA=[0madmin
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/Nginx-Prod-L7/configure_deploy
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] Done
+The recommended git tool is: NONE
+using credential ops-gitlab
+Cloning the remote Git repository
+Cloning repository http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git init /var/jenkins_home/workspace/Nginx-Prod-L7/configure_deploy # timeout=10
+Fetching upstream changes from http://10.0.1.225/nginx/nginx-prod-l7.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.2'
+using GIT_ASKPASS to set credentials ops-gitlab
+ > git fetch --tags --force --progress -- http://10.0.1.225/nginx/nginx-prod-l7.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url http://10.0.1.225/nginx/nginx-prod-l7.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 6fc47827717efffef5111d2632bd75869f3bc178 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 6fc47827717efffef5111d2632bd75869f3bc178 # timeout=10
+Commit message: "Update www.zhushiyang.net version to www.zhushiyang.net-202208291041-1 by admin"
+ > git rev-list --no-walk 6fc47827717efffef5111d2632bd75869f3bc178 # timeout=10
+[configure_deploy] $ /bin/sh -xe /tmp/jenkins8945915450368533963.sh
++ echo 10.0.1.222
+10.0.1.222
++ ansible -i /root/ansible/hosts 10.0.1.222 -m ping
+[WARNING]: Unable to parse /root/ansible/hosts as an inventory source
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+[WARNING]: Could not match supplied host pattern, ignoring: 10.0.1.222
+Finished: SUCCESS
